@@ -18,8 +18,9 @@
 
           //console.log(response);
 
+          $("#wizards-view").empty();
           // Looping over every result item
-          for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < results.length; i++) {
 
             // Only taking action if the photo has an appropriate rating
             if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
@@ -37,17 +38,17 @@
 
               // Giving the image tag an src attribute of a proprty pulled off the
               // result item
-              personImage.attr("src", results[i].images.fixed_height.url);
+              personImage.attr("src", results[i].images.fixed_height_still.url);
 
-              // personImage.attr("data-animate", results[i].images.fixed_height_still.url);
+              personImage.attr("data-animate", results[i].images.fixed_height.url);
 
-              // personImage.attr("data-still", results[i].images.fixed_height_still.url);
+              personImage.attr("data-still", results[i].images.fixed_height_still.url);
 
-              // personImage.attr("data-state", "still");
+              personImage.attr("data-state", "still");
 
-              // personImage.addClass("gif");
+              personImage.addClass("gif");
 
-              // console.log(personImage);
+              console.log(personImage);
 
               // Appending the paragraph and personImage we created to the "gifDiv" div we created
               gifDiv.append(personImage);
@@ -63,7 +64,7 @@
 
 
 
-      $(".gif").on("click", function() {
+      $(document).on("click", ".gif", function() {
         console.log("click");
         // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
         var state = $(this).attr("data-state");
@@ -84,7 +85,7 @@
         }
       });
 
-      
+
       // Function for displaying movie data
       function renderButtons() {
 
