@@ -1,28 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Giphy Homework</title>
+  <title>Giphy Homework</title>
+  <link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/sketchy/bootstrap.css" >
+
 </head>
 <body>
-	
-	<!-- Rendered Buttons will get Dumped Here  -->
-	<div id="wizardButtons"></div>
 
+<div class="container">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="http://www.maikescherer.com">Main Page</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+
+  <div class="jumbotron">
+    <h1 class="display-3">The Wizarding World of Giphy!</h1>
+    <p class="lead">Where you can make images move by clicking on them.</p>
+    <hr class="my-4">
+    <p>To conjure gifs, press a button of your choice. To conjure a new button, enter a spell into the box.</p>
     
-    
+    <div class="row">
+      <div class="col-md-12">
+      <!-- Rendered Buttons will get Dumped Here  -->
+        <div id="wizardButtons"></div>
+      </div>
+    </div>
+    <br /><br />
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group" id="wizard-form">
+        <!-- Button triggers new wizard to be added -->
+          <input class="form-control" type="text" id="wizard-input" placeholder="Enter spells here...">
+          <input id="add-wizard" class="btn btn-outline-primary" type="submit" value="Add wizard">
+        </div>
+      </div>
+    </div>
+    <!-- Wizards will Get Dumped Dere -->
+    <div id="wizards-view"></div>
+  </div>
 
-    <form id="wizard-form">
-      
-      
+  
+</div>
 
-      <!-- Button triggers new wizard to be added -->
-      <input id="add-wizard" type="submit" value="Add wizard">
-      <input type="text" id="wizard-input"><br>
-    </form>
-    <!-- Movies will Get Dumped Dere -->
-    <div id="wizards-view" ></div>
-
+<!-- scripts -->
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="assets/javascript/app.js"></script>
+
 </body>
 </html>
