@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Giphy Homework</title>
+  <meta charset="utf-8">
+  <title>Magical Images</title>
   <link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/sketchy/bootstrap.css" >
-
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
 
@@ -11,41 +12,67 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="http://www.maikescherer.com">Main Page</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
   </nav>
 
   <div class="jumbotron">
     <h1 class="display-3">The Wizarding World of Giphy!</h1>
-    <p class="lead">Where you can make images move by clicking on them.</p>
-    <hr class="my-4">
-    <p>To conjure gifs, press a button of your choice. To conjure a new button, enter a spell into the box.</p>
+    <p class="lead">Where you can make images move by tapping them with your wand.</p>
+    <hr class="my-4"/>
     
     <div class="row">
       <div class="col-md-12">
-      <!-- Rendered Buttons will get Dumped Here  -->
+      <!-- rendered Buttons go here  -->
         <div id="wizardButtons"></div>
       </div>
     </div>
-    <br /><br />
+    <hr class="my-4"/>
+    <p>To conjure gifs, tap a button of our choice with your wand and say "Accio gif".</p> 
+    <p>To add a new button, enter a spell into the spell box, tap the <em>Aparecium</em> button, 
+      and say "Aparecium button".</p>
+    <p>To make an image move, tap it with your wand.</p>
+    <p>To remove all images, press the <em>Obsoletum Picturae</em> button.</p>
     <div class="row">
       <div class="col-md-4">
-        <div class="form-group" id="wizard-form">
-        <!-- Button triggers new wizard to be added -->
-          <input class="form-control" type="text" id="wizard-input" placeholder="Enter spells here...">
-          <input id="add-wizard" class="btn btn-outline-primary" type="submit" value="Add wizard">
-        </div>
+        <form class="form-inline" id="wizard-form">
+          <div class="form-group">
+            <label class="sr-only" for="wizard-input">Aparecium</label>
+            <input class="form-control" type="text" id="wizard-input" placeholder="Enter spell">
+          </div>
+          <!-- button to add new wizard -->
+          <button type="submit" id="add-wizard" class="btn btn-outline-primary">Aparecium</button>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <form class="form-inline" id="wizard-remove-form">
+          <div class="form-group">
+              <label class="sr-only" for="wizard-removal">Aparecium</label>
+              <input class="form-control" type="text" id="wizard-removal" placeholder="Enter spell to remove">
+            </div>
+            <!-- button to add new wizard -->
+            <button type="submit" id="remove-wizard" class="btn btn-outline-primary">Obsoletum</button>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <button type="button" id="remove-images" class="btn btn-outline-primary">Obsoletum Picturae</button>
       </div>
     </div>
-    <!-- Wizards will Get Dumped Dere -->
-    <div id="wizards-view"></div>
   </div>
 
-  
+   <!-- images go here -->
+  <div id="wizards-view" class="clearfix"></div>
+
+  <hr class="my-4"/>
+  <footer class="text-center">
+    <p>
+      All Harry Potter Characters are trademarks of and &copy; Warner Bros. Entertainment Inc.
+      This site was made for the sole purpose of playing with giphyAPI.
+    </p> 
+  </footer>
+
 </div>
 
 <!-- scripts -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="assets/javascript/app.js"></script>
 

@@ -1,0 +1,7 @@
+/*  
+    wand credit: 
+    http://www.rw-designer.com/cursor-detail/26747
+*/
+button, input, img { 
+    cursor: url(../images/wand_cursor.cur), pointer !important;
+}

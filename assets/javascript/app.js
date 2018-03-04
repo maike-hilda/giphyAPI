@@ -1,129 +1,172 @@
-// Initial array of wizards
-var wizards = ["Harry Potter", "Ron Weasley", "Hermione Granger"];
-    
-// displaywizardInfo function re-renders the HTML to display the appropriate content
-function displaywizardInfo() {
+// add buttons using a form input, remove buttons with a drag even,
+// click the buttons to get images that turn into gifs when the user clicks them
+// uses HTML5, Bootstrap, JavaScript, JQuery, SweetAlert CDN, GiphyAPI
 
-  var wizard = $(this).attr("data-name");
-  var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
-  wizard + "&api_key=dc6zaTOxFJmzC&limit=10";
+$(document).ready(function(){
 
-  // Creating an AJAX call for the specific wizard button being clicked
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).done(function(response) {
+  // Initial array of wizards
+  var wizards = ["Harry Potter", "Ron Weasley", "Hermione Granger", "Ginny Weasley",
+    "Luna Lovegood", "Neville Longbottom"];
+  
+  // display buttons
+  function renderButtons() {
+    // delete the current buttons else buttons will repeat
+    $("#wizardButtons").empty();
+    // loop through the array of wizards
+    for (var i = 0; i < wizards.length; i++) {
+      // generate buttons for each wizard in the array
+      // this code $("<button>") is all jQuery needs to create the beginning and
+      // end tag. (<button></button>)
+      var button = $("<button>");
+      // add class of wizard to button, btn btn-seconary is for bootstrap
+      button.addClass("wizard btn btn-secondary");
+      // add a data-attr
+      button.attr("data-name", wizards[i]);
+      // provide initial button text
+      button.text(wizards[i]);
+      // add the button to the wizardButtons div
+      $("#wizardButtons").append(button);
+    }
+  }
 
-    var results = response.data;
-
-    //console.log(response);
-
-    $("#wizards-view").empty();
-    // Looping over every result item
-    for (var i = 0; i < results.length; i++) {
-
-      // Only taking action if the photo has an appropriate rating
-      if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
-        // Creating a div with the class "item"
-        var gifDiv = $("<div class='item'>");
-
-        // Storing the result item's rating
-        var rating = results[i].rating;
-
-        // Creating a paragraph tag with the result item's rating
-        var p = $("<p>").text("Rating: " + rating);
-
-        // Creating an image tag
-        var personImage = $("<img>");
-
-        // Giving the image tag an src attribute of a proprty pulled off the
-        // result item
-        personImage.attr("src", results[i].images.fixed_height_still.url);
-
-        personImage.attr("data-animate", results[i].images.fixed_height.url);
-
-        personImage.attr("data-still", results[i].images.fixed_height_still.url);
-
-        personImage.attr("data-state", "still");
-
-        personImage.addClass("gif");
-
-        console.log(personImage);
-
-        // Appending the paragraph and personImage we created to the "gifDiv" div we created
-        gifDiv.append(personImage);
-        gifDiv.append(p);
-
-        // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
-        $("#wizards-view").prepend(gifDiv);
+  // displayGifs re-renders the HTML to display the images
+  function displayGifs() {
+    //get name of button pushed
+    var wizard = $(this).attr("data-name");
+    // create the url for giphy api
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+      wizard + "&api_key=dc6zaTOxFJmzC&limit=10";
+    // create AJAX call for wizard button clicked
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).done(function(response) {
+      var results = response.data;
+      // console.log(response);
+      if (results.length > 0) {
+      //  $("#wizards-view").empty();
+        // Looping over every result item
+        for (var i = 0; i < results.length; i++) {
+          // Only taking action if the photo has an appropriate rating
+          if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+            // Creating a div with the class "item"
+            var gifDiv = $("<div class='item float-left'>");
+            // storing results item's rating
+            var rating = results[i].rating;
+            // creating a p tag with the results rating
+            var p = $("<p>").text("Rating: " + rating);
+            p.addClass("text-center")
+            // creating an image tag
+            var image = $("<img>");
+            // add src attribute of a proprty pulled off the results item
+            image.attr("src", results[i].images.fixed_height_still.url);
+            image.attr("data-animate", results[i].images.fixed_height.url);
+            image.attr("data-still", results[i].images.fixed_height_still.url);
+            image.attr("data-state", "still");
+            image.addClass("gif rounded");
+            // append p and image created to gifDiv
+            gifDiv.append(image);
+            gifDiv.append(p);
+            // prepend gifDiv to the "#gifs-appear-here" div in the HTML
+            $("#wizards-view").prepend(gifDiv);
+          }
+        }
+      } else {
+        // use the sweetAlert CDN (see bottom of html)
+        swal({
+          title: "No results.",
+          text: "Let's remove this button.",
+          icon: "error",
+          button: "Ok",
+        }).then(function(){
+          wizards.splice(wizards.indexOf(wizard),1);
+          renderButtons();
+        });
       }
+    });
+  }
+
+  $(document).on("click", ".gif", function() {
+    console.log("click");
+    // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+    var state = $(this).attr("data-state");
+    // if clicked image state is still, update src attr to what its data-animate value is
+    // then set image data-state to animate
+    // else set src to the data-still value
+    if (state === "animate") {
+      // console.log("state was animate");
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    } else {
+      // console.log("state was still");
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
     }
   });
-}
 
-$(document).on("click", ".gif", function() {
-  console.log("click");
-  // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
-  var state = $(this).attr("data-state");
-  console.log("state it is assinged: " + state);
-  // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-  // Then, set the image's data-state to animate
-  // Else set src to the data-still value
-  if (state === "animate") {
-    console.log("state was animate");
-    $(this).attr("src", $(this).attr("data-still"));
-    console.log("url :" + $(this).attr("src"));
-    $(this).attr("data-state", "still");
-    
-  } else {
-    console.log("state was still");
-    $(this).attr("src", $(this).attr("data-animate"));
-    $(this).attr("data-state", "animate");
-  }
-});
+  // when Aparecium button is clicked i.e. add new button
+  $("#add-wizard").on("click", function(event) {
+    event.preventDefault();
+    // This line grabs the input from the textbox
+    var wizard = $("#wizard-input").val().trim();
+    // remove input from input box in html
+    $("#wizard-input").val("");
+    if (wizard && !wizards.includes(wizard)) {
+      // Adding wizard from the textbox to our array
+      wizards.push(wizard);
+      // Calling renderButtons which handles the processing of our wizard array
+      renderButtons();
+      $("wizard-form").trigger("reset");
+    }
+  });
 
-// Function for displaying movie data
-function renderButtons() {
+  // pressing enter while in input box triggers "Aparecium" button click
+  $("#wizard-input").keyup(function(event) {
+    if (event.keyCode == 13) {
+      $("#add-wizard").click()
+    }
+  });
 
-  // Deleting the wizards prior to adding new wizards
-  // (this is necessary otherwise you will have repeat buttons)
-  $("#wizardButtons").empty();
+  // when Obsoletum button is clicked
+  $("#remove-wizard").on("click", function(even){
+    event.preventDefault();
+    // This line grabs the input from the textbox
+    var wizard = $("#wizard-removal").val().trim();
+    // remove input from input box in html
+    $("#wizard-removal").val("");
+    if (wizard && wizards.includes(wizard)) {
+      swal({
+        title: "Spell Found!",
+        text: "Let's remove this button.",
+        icon: "success",
+        button: "Ok",
+      }).then(function(){
+        wizards.splice(wizards.indexOf(wizard),1);
+        renderButtons();
+      });
+    } else {
+      swal({
+        title: "No results.",
+        text: "This button does not exist.",
+        icon: "error",
+        button: "Ok",
+      });
+    }
+  });
 
-  // Looping through the array of wizards
-  for (var i = 0; i < wizards.length; i++) {
+  $("#wizard-removal").keyup(function(event) {
+    if (event.keyCode == 13) {
+      $("#remove-wizard").click()
+    }
+  });
 
-    // Then dynamicaly generating buttons for each wizard in the array
-    // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-    var a = $("<button>");
-    // Adding a class of wizard to our button
-    a.addClass("wizard btn btn-secondary");
-    // Adding a data-attribute
-    a.attr("data-name", wizards[i]);
-    // Providing the initial button text
-    a.text(wizards[i]);
-    // Adding the button to the wizardButtons div
-    $("#wizardButtons").append(a);
-  }
-}
+  $("#remove-images").on("click", function(even){
+    // event.preventDefault();
+    $("#wizards-view").empty();
+  });
 
-// This function handles events where a wizard button is clicked
-$("#add-wizard").on("click", function(event) {
-  event.preventDefault();
-  // This line grabs the input from the textbox
-  var wizard = $("#wizard-input").val().trim();
-
-  // Adding wizard from the textbox to our array
-  wizards.push(wizard);
-
-  // Calling renderButtons which handles the processing of our wizard array
+  // Adding a click event listener to all elements with a class of "wizard"
+  $(document).on("click", ".wizard", displayGifs);
+  // call on initial page load to show default buttons
   renderButtons();
 });
-
-// Adding a click event listener to all elements with a class of "wizard"
-$(document).on("click", ".wizard", displaywizardInfo);
-
-// Calling the renderButtons function to display the intial buttons
-renderButtons();
-
-
-    
