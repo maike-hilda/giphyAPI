@@ -2,6 +2,8 @@
 // click the buttons to get images that turn into gifs when the user clicks them
 // uses HTML5, Bootstrap, JavaScript, JQuery, SweetAlert CDN, GiphyAPI
 
+"use strict";
+
 $(document).ready(function(){
 
   // Initial array of wizards
